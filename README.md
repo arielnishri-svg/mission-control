@@ -2,8 +2,6 @@
 
 A personal OS plugin for Claude Cowork. Unifies your daily calendar, inbox, and investments into a single morning brief — and keeps your context alive when you switch between Cowork and Claude Chat.
 
-Built by [Ariel Nishri](https://cogniqos.substack.com).
-
 ---
 
 ## What it does
