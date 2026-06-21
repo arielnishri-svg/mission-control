@@ -28,23 +28,28 @@ At the end of every Cowork session, the `wrap up session` skill updates all thre
 
 ## How to use it
 
-### 1. Create the three docs in Google Drive
+### 1. Install the plugin in Cowork
 
-Create three Google Docs named `NOW`, `DECISIONS`, and `OPEN`. Keep them in a folder called `_spine`.
+Install the `.plugin` file (Settings → Plugins → Install from file).
 
-### 2. Install this plugin in Cowork
+### 2. Connect your Google services
 
-Install the `.plugin` file in Cowork (Settings → Plugins → Install from file). Connect Gmail, Google Calendar, and Google Drive in Settings → Connectors.
+In Cowork Settings → Connectors, connect **Gmail**, **Google Calendar**, and **Google Drive**. These are the only prerequisite — the plugin handles everything else.
 
 ### 3. Run setup
 
-Say `set up mission control` in a new Cowork session. The setup skill creates your folder structure, seeds your memory files, and links the Drive spine docs.
+Say `set up mission control` in a new Cowork session. The setup skill:
+- Creates your local folder structure and memory files
+- Creates the three spine docs (`NOW`, `DECISIONS`, `OPEN`) directly in your Google Drive
+- Saves the Drive file IDs to your memory so the wrapup skill can write to them automatically
+
+No manual doc creation needed.
 
 ### 4. Connect Drive to Claude Chat
 
 In [claude.ai](https://claude.ai) → Projects → New Project:
 1. Add content → Google Drive
-2. Add the `NOW`, `DECISIONS`, and `OPEN` docs
+2. Search for and add the `NOW`, `DECISIONS`, and `OPEN` docs the setup skill just created
 3. Use this project for any Chat session where you want context continuity
 
 ### 5. Wrap up every session
