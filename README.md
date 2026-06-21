@@ -138,8 +138,13 @@ Say `check the build queue` (or set up a 30-minute scheduled task) and it builds
 
 - Not a broker integration (prices come from web search, not your account)
 - Not a meeting prep tool for Microsoft/Outlook calendars (Google Calendar only)
-- Not a code assistant (use Claude Code for that)
 - Not a replacement for your own judgment on investments
+
+---
+
+## Claude Code compatibility
+
+The spine files (NOW, DECISIONS, OPEN) are Google Docs, but Cowork also maintains local markdown versions in your `cowork/` folder. Claude Code can read those directly — point it at `memory/global.md` and the daily brief to give it the same context that Chat gets from Drive. A CLAUDE.md in the repo root that references these files is all you need.
 
 ---
 
