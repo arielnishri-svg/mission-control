@@ -1,15 +1,15 @@
 ---
 name: setup
-description: Sets up Mission Control for a new user — creates the folder structure, seeds memory and skill files, creates the Drive spine (NOW, DECISIONS, OPEN), and guides through connecting Gmail and Google Calendar. Triggered when user says "set up mission control", "run setup", "install mission control", or "initialise mission control".
+description: Sets up claude-spine for a new user — creates the folder structure, seeds memory and skill files, creates the Drive spine (NOW, DECISIONS, OPEN), and guides through connecting Gmail and Google Calendar. Triggered when user says "set up claude-spine", "run setup", "install claude-spine", or "initialise claude-spine".
 ---
 
-# Mission Control Setup
+# claude-spine Setup
 
-Walk the user through a complete Mission Control installation. Do every step in order. Do not skip steps. Confirm completion of each before moving to the next.
+Walk the user through a complete claude-spine installation. Do every step in order. Do not skip steps. Confirm completion of each before moving to the next.
 
 ## Step 1 — Confirm workspace folder
 
-Tell the user: "I'll create the Mission Control folder structure inside your connected Cowork folder. This will be at ~/Documents/Claude Cowork/cowork/ by default."
+Tell the user: "I'll create the claude-spine folder structure inside your connected Cowork folder. This will be at ~/Documents/Claude Cowork/cowork/ by default."
 
 Ask them to confirm or provide a different path. Use their answer as BASE_PATH for all subsequent steps.
 
@@ -30,7 +30,7 @@ Create the following directories and empty seed files:
 │       ├── portfolio.md   ← create with Step 5 content
 │       ├── dashboard.md   ← empty
 │       └── memory.md      ← empty
-├── skills/                ← empty (skills live in the plugin)
+├── spine/                 ← local mirror of Drive spine
 ├── autonomous-builder/
 │   ├── pending/
 │   ├── in-progress/
@@ -38,7 +38,7 @@ Create the following directories and empty seed files:
 │   ├── failed/
 │   └── logs/
 │       └── builder-log.md ← create with header only
-└── mission-control.md     ← create with Step 6 content
+└── README.md              ← create with Step 6 content
 ```
 
 ## Step 3 — Seed global.md
@@ -69,9 +69,16 @@ Write `{BASE_PATH}/memory/global.md` with this content, substituting their answe
 ## Active projects
 {PROJECTS}
 
+## Drive spine
+
+Google Drive doc IDs for the spine (added by setup or wrapup skill):
+
+- NOW: [add after Drive spine is created]
+- DECISIONS: [add after Drive spine is created]
+- OPEN: [add after Drive spine is created]
+
 ## Preferences
 - Morning brief is manual (say "generate my morning brief"), not scheduled
-- British English preferred (adjust to user's preference if they specify)
 ```
 
 ## Step 4 — Seed daily-log.md
@@ -92,7 +99,7 @@ Next: [what to do next time]
 ---
 
 ## {TODAY}
-Built/decided: Mission Control installed and configured.
+Built/decided: claude-spine installed and configured.
 Key decisions: Manual brief trigger (say "generate my morning brief"). Drive spine set up for Chat/Cowork context sharing.
 Next: Connect Gmail and Google Calendar if not already done. Fill in portfolio.md if using investments module.
 ```
@@ -146,12 +153,12 @@ Write `{BASE_PATH}/projects/investments/portfolio.md`:
 > Ticker, trigger price, reason.
 ```
 
-## Step 6 — Seed mission-control.md
+## Step 6 — Seed README.md
 
-Write `{BASE_PATH}/mission-control.md`:
+Write `{BASE_PATH}/README.md`:
 
 ```markdown
-# Mission Control
+# claude-spine
 **Installed:** {TODAY}
 
 ## How to use
@@ -160,7 +167,7 @@ Write `{BASE_PATH}/mission-control.md`:
 |----------|-------------|
 | "Generate my morning brief" | Pulls Calendar + Gmail → writes brief.md |
 | "Research [TICKER]" | Web search + thesis check → appends to dashboard.md |
-| "Wrap up session" | Updates Drive spine + daily-log.md |
+| "Wrap up session" | Updates Drive spine + local spine/ + daily-log.md |
 | "Check the build queue" | Runs the autonomous builder on pending/ |
 
 ## Connectors needed
@@ -169,8 +176,9 @@ Write `{BASE_PATH}/mission-control.md`:
 - Google Drive — needed for spine sync (connect in Cowork settings)
 
 ## Key files
-- memory/global.md — who you are, your tools, active projects
+- memory/global.md — who you are, your tools, active projects, Drive IDs
 - memory/daily-log.md — session log, updated by "wrap up session"
+- spine/ — local mirror of Drive spine, pushed to GitHub for Claude Chat
 - projects/daily-digest/brief.md — today's brief (overwritten each run)
 - projects/investments/portfolio.md — holdings + thesis (optional)
 ```
@@ -186,9 +194,9 @@ Check if Google Drive connector is available. If yes, proceed automatically:
 3. Create a Google Doc called `DECISIONS` inside `_spine` with today's setup decision logged
 4. Create a Google Doc called `OPEN` inside `_spine` with starter open items
 
-If Drive is not connected, tell the user: "Connect Google Drive in Cowork Settings → Connectors, then say 'wrap up session' and I'll create the spine files automatically."
+Save the Drive file IDs to `memory/global.md` under the `## Drive spine` section.
 
-Save the Drive file IDs to `memory/global.md` under a `## Drive spine` section so the wrapup skill can find them.
+If Drive is not connected, tell the user: "Connect Google Drive in Cowork Settings → Connectors, then say 'wrap up session' and I'll create the spine files automatically."
 
 ## Step 8 — Guide: connect Gmail and Google Calendar
 
@@ -203,18 +211,21 @@ Tell the user exactly:
 
 If the connectors are already connected (tools are available in this session), skip this step and tell the user they're already set up.
 
-## Step 9 — Guide: connect Drive spine to Claude Chat
+## Step 9 — Guide: connect spine to Claude Chat
 
 Tell the user:
 
-"Last step — this connects your context to Claude Chat so you can switch to Opus for deep reasoning without losing your setup:
+"Last step — this connects your context to Claude Chat so you can switch between tools without losing your setup:
 
-1. Go to claude.ai in your browser
-2. Click Projects in the left sidebar
-3. Create a new Project — call it 'Mission Control'
-4. Inside the project, click Add content → Google Drive
-5. Search for NOW, DECISIONS, OPEN and add all three
-6. Done. Any Chat session inside this Project reads your current state."
+Option A — GitHub (recommended):
+1. Create a private GitHub repo (e.g. my-spine)
+2. Push your BASE_PATH folder to it
+3. In Claude Chat, go to Projects → create a Project → Add content → GitHub
+4. Connect the repo. Any Chat session in this Project reads your current state.
+
+Option B — Google Drive:
+1. Go to claude.ai → Projects → create a Project → Add content → Google Drive
+2. Search for NOW, DECISIONS, OPEN and add all three."
 
 ## Step 10 — Confirm and summarise
 
